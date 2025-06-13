@@ -1,9 +1,13 @@
+pub mod db;
+pub mod models;
+pub mod server_functions;
+pub mod pages;
+use pages::{HomePage, TeamPage};
 use leptos::prelude::*;
-use leptos_meta::{provide_meta_context, Stylesheet, Title};
-use leptos_router::{
-    components::{Route, Router, Routes},
-    StaticSegment, WildcardSegment,
-};
+use leptos::prelude::ElementExt;
+use leptos_meta::*;
+use leptos_router::*;
+use leptos_router::components::{Router, Route, Routes};
 
 #[component]
 pub fn App() -> impl IntoView {
@@ -17,30 +21,27 @@ pub fn App() -> impl IntoView {
         <link data-trunk rel="tailwind-css" href="/style/input.css "/>
 
         // sets the document title
-        <Title text="Welcome to Leptos"/>
+        <Title text="Full-Stack Dashboard App"/>
 
         // content for this welcome page
         <Router>
             <main>
-                <Routes fallback=move || "Not found.">
-                    <Route path=StaticSegment("") view=HomePage/>
-                    <Route path=WildcardSegment("any") view=NotFound/>
+                <body class="bg-gray-900 overflow-x-hide" />
+                <Routes fallback=|| "Not found."> // Might not need this fallback lambda?
+                    <Route path=path!("/") view=move || {
+                        view! {
+                            <HomePage />
+                        }
+                    }/>
+                    <Route path=path!("/team") view=move || {
+                        view! {
+                            <TeamPage />
+                        }
+                    }/>
+                    <Route path=path!("/*any") view=NotFound/>
                 </Routes>
             </main>
         </Router>
-    }
-}
-
-/// Renders the home page of your application.
-#[component]
-fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let count = RwSignal::new(0);
-    let on_click = move |_| *count.write() += 1;
-
-    view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button class="bg-red-500 rounded text-white px-2 py-2" on:click=on_click>"Click Me: " {count}</button>
     }
 }
 
