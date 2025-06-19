@@ -1,10 +1,11 @@
+pub mod components;
 pub mod db;
 pub mod models;
 pub mod server_functions;
 pub mod pages;
 use pages::{HomePage, TeamPage};
+
 use leptos::prelude::*;
-use leptos::prelude::ElementExt;
 use leptos_meta::*;
 use leptos_router::*;
 use leptos_router::components::{Router, Route, Routes};
@@ -28,12 +29,12 @@ pub fn App() -> impl IntoView {
             <main>
                 <body class="bg-gray-900 overflow-x-hide" />
                 <Routes fallback=|| "Not found."> // Might not need this fallback lambda?
-                    <Route path=path!("/") view=move || {
+                    <Route path="/" view=move || {
                         view! {
                             <HomePage />
                         }
                     }/>
-                    <Route path=path!("/team") view=move || {
+                    <Route path="/team" view=move || {
                         view! {
                             <TeamPage />
                         }
